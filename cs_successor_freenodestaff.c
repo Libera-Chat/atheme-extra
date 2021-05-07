@@ -23,7 +23,7 @@ static void channel_pick_successor_hook(hook_channel_succession_req_t *req)
 	 * If some other user of this hook picked a successor
 	 * we intentionally overrule it.
 	 */
-	req->mu = myuser_find_ext("freenode-staff");
+	req->mu = myuser_find_ext("?AAAAAAABB");
 }
 
 static void mod_init(module_t *m)
