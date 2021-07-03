@@ -25,6 +25,13 @@ static void cmd_claim(sourceinfo_t *si, int parc, char *parv[])
 		return;
 	}
 
+	// make sure the channel exists
+	if (!channel_find(name))
+	{
+		command_fail(si, fault_nosuch_target, _("The channel \2%s\2 must exist in order to register it."), name);
+		return;
+	}
+
 	char *namespace = NULL;
 	struct projectns *p = projectsvs->channame_get_project(name, &namespace);
 
