@@ -12,7 +12,7 @@
 
 static void cmd_claim(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t cs_claim = { "CLAIM", N_("Grants you access to a channel belonging to your project."), AC_AUTHENTICATED, 1, cmd_claim, { .path = "freenode/cs_claim" } };
+command_t cs_claim = { "CLAIM", N_("Grants you access to a channel belonging to your project."), AC_AUTHENTICATED, 2, cmd_claim, { .path = "freenode/cs_claim" } };
 
 static void cmd_claim(sourceinfo_t *si, int parc, char *parv[])
 {
