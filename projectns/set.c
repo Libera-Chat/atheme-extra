@@ -182,7 +182,8 @@ static void set_name(sourceinfo_t *si, int parc, char *parv[])
 		return;
 	}
 
-	if (projectsvs->project_find(newname) != p)
+	struct projectns *existing = projectsvs->project_find(newname);
+	if (existing && existing != p)
 	{
 		command_fail(si, fault_alreadyexists, _("A project named \2%s\2 already exists. Please choose a different name."), newname);
 		return;
