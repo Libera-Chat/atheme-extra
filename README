@@ -1,19 +1,5 @@
-These are freenode-specific modules for atheme-services.
-
-They are currently intended for atheme-services trunk,
-hg clone http://hg.atheme-project.org/atheme
-
-The ircd is hyperion as currently used by freenode (hyperion-1.0.2b(382)).
+These are libera.chat-specific modules for atheme-services.
 
 To compile, first compile and install atheme-services. Then copy
 Makefile.config.example to Makefile.config and edit it, then make and make
 install.
-
-You can then load the modules using atheme.conf lines like
-loadmodule "modules/freenode/regnotice.so";
-loadmodule "modules/freenode/ns_extendchans.so";
-loadmodule "modules/freenode/cs_access.so";
-loadmodule "modules/freenode/os_greplog.so";
-or the OperServ MODLOAD command.
-
--- jilles, May 2007
