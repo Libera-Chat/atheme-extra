@@ -13,9 +13,9 @@
 static void nick_reg_notice(myuser_t *mu)
 {
 	myuser_notice(nicksvs.nick, mu, " ");
-	myuser_notice(nicksvs.nick, mu, "For frequently-asked questions about the network, please see the");
-	myuser_notice(nicksvs.nick, mu, "Knowledge Base page (https://freenode.net/kb/all). Should you need more");
-	myuser_notice(nicksvs.nick, mu, "help you can /join #freenode to find network staff.");
+	myuser_notice(nicksvs.nick, mu, "For frequently-asked questions about the network, please see our");
+	myuser_notice(nicksvs.nick, mu, "Guides page (https://libera.chat/guides/). Should you need more");
+	myuser_notice(nicksvs.nick, mu, "help you can /join #libera to find network staff.");
 }
 
 static void chan_reg_notice(hook_channel_req_t *hdata)
@@ -27,21 +27,8 @@ static void chan_reg_notice(hook_channel_req_t *hdata)
 		return;
 
 	command_success_nodata(si, " ");
-	command_success_nodata(si, "Channel guidelines can be found on the freenode website:");
-	command_success_nodata(si, "https://freenode.net/changuide");
-	if (mc->name[1] != '#')
-	{
-		command_success_nodata(si, "This is a primary namespace channel as per\n"
-				"https://freenode.net/policies#channel-ownership");
-		command_success_nodata(si, "If you do not own this name, please consider\n"
-				"dropping %s and using #%s instead.",
-				mc->name, mc->name);
-	}
-	else
-	{
-		command_success_nodata(si, "This is an \"about\" channel as per");
-		command_success_nodata(si, "https://freenode.net/policies#channel-ownership");
-	}
+	command_success_nodata(si, "Channel guidelines can be found on the Libera Chat website:");
+	command_success_nodata(si, "https://libera.chat/changuide");
 
 	mc->mlock_on = CMODE_NOEXT | CMODE_TOPIC | mode_to_flag('c');
 	mc->mlock_off |= CMODE_SEC;
