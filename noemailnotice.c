@@ -41,5 +41,5 @@ DECLARE_MODULE_V1
 (
 	"libera/noemailnotice", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
 	PACKAGE_STRING,
-	"libera <http://libera.chat>"
+	"libera chat <https://libera.chat>"
 );

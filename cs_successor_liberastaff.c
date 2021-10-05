@@ -40,5 +40,5 @@ DECLARE_MODULE_V1
 (
 	"libera/cs_successor_liberastaff", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
 	"$Id: cs_successor_liberastaff.c 65 2012-06-09 12:25:31Z stephen $",
-	"libera <http://libera.chat>"
+	"libera chat <https://libera.chat>"
 );
