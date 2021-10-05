@@ -2,12 +2,12 @@
  * Copyright (c) 2007 Jilles Tjoelker
  * Rights to this code are as documented in doc/LICENSE.
  *
- * freenode on-registration notices and default settings
+ * libera on-registration notices and default settings
  *
  * $Id: regnotice.c 69 2013-03-25 13:07:19Z stephen $
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 
 static void nick_reg_notice(myuser_t *mu)
@@ -63,7 +63,7 @@ static void mod_deinit(module_unload_intent_t intentvoid)
 
 DECLARE_MODULE_V1
 (
-	"freenode/regnotice", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"libera/regnotice", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
 	"$Id: regnotice.c 69 2013-03-25 13:07:19Z stephen $",
-	"freenode <http://www.freenode.net>"
+	"libera chat <https://libera.chat>"
 );

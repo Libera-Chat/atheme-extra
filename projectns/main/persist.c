@@ -6,7 +6,7 @@
  * Core functionality - Persistence when reloading
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "main.h"
 
 #define PERSIST_STORAGE_NAME "atheme.freenode.projectns.main.persist"
@@ -38,8 +38,8 @@ bool persist_load_data(module_t *m)
 	// Disallow live downgrading
 	if (rec->version > PROJECTNS_ABIREV)
 	{
-		slog(LG_ERROR, "freenode/projectns/main: attempted to load data from newer module (%u > %u)", rec->version, PROJECTNS_ABIREV);
-		slog(LG_ERROR, "freenode/projectns/main: This module cannot be safely reloaded without restarting services");
+		slog(LG_ERROR, "libera/projectns/main: attempted to load data from newer module (%u > %u)", rec->version, PROJECTNS_ABIREV);
+		slog(LG_ERROR, "libera/projectns/main: This module cannot be safely reloaded without restarting services");
 		/* (among other things, it would cause us memory leaks as there may be pointers in the
 		 * newer struct projectns that we won't know to free, plus data might be lost.
 		 * Best to play it safe.)
@@ -47,7 +47,7 @@ bool persist_load_data(module_t *m)
 		m->mflags = MODFLAG_FAIL;
 		return false;
 	}
-	slog(LG_DEBUG, "freenode/projectns/main: restoring pre-reload structures (old: %u; new: %u)", rec->version, PROJECTNS_ABIREV);
+	slog(LG_DEBUG, "libera/projectns/main: restoring pre-reload structures (old: %u; new: %u)", rec->version, PROJECTNS_ABIREV);
 	projectsvs.me = rec->service;
 
 	/* If rec->version == PROJECTNS_ABIREV, we could probably re-use rec->projects safely.

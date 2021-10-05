@@ -32,7 +32,7 @@ default: all
 
 SRCS = \
 	log_sasl_fail.c \
-	cs_successor_freenodestaff.c \
+	cs_successor_liberastaff.c \
 	regnotice.c \
 	noemailnotice.c \
 	os_regts.c \
@@ -63,15 +63,15 @@ PROJECTNS_MAIN_SRCS = \
 	projectns/main/util.c
 
 OBJS = ${SRCS:.c=.so} projectns/main.so
-OTHER = fn-rotatelogs fn-sendemail
+OTHER = lc-rotatelogs lc-sendemail
 
 all: ${OBJS} ${OTHER}
 
 install:
-	${INSTALL} -m 755 -d $(DESTDIR)${MODDIR}/modules/freenode
-	${INSTALL} -m 755 *.so $(DESTDIR)${MODDIR}/modules/freenode
-	${INSTALL} -m 755 -d $(DESTDIR)${MODDIR}/modules/freenode/projectns
-	${INSTALL} -m 755 projectns/*.so $(DESTDIR)${MODDIR}/modules/freenode/projectns
+	${INSTALL} -m 755 -d $(DESTDIR)${MODDIR}/modules/libera
+	${INSTALL} -m 755 *.so $(DESTDIR)${MODDIR}/modules/libera
+	${INSTALL} -m 755 -d $(DESTDIR)${MODDIR}/modules/libera/projectns
+	${INSTALL} -m 755 projectns/*.so $(DESTDIR)${MODDIR}/modules/libera/projectns
 	${INSTALL} -m 755 -d $(DESTDIR)${bindir}
 	${INSTALL} -m 755 ${OTHER} $(DESTDIR)${bindir}
 	$(INSTALL) -m 755 -d $(DESTDIR)$(SHAREDIR)/help
@@ -95,8 +95,8 @@ install:
 projectns/main.so: ${PROJECTNS_MAIN_SRCS}
 	${CC} ${PICFLAGS} ${CPPFLAGS} ${CFLAGS} $^ -o $@
 
-fn-rotatelogs: fn-rotatelogs.in
-	sed -e 's!@prefix@!${prefix}!g' fn-rotatelogs.in > fn-rotatelogs
+lc-rotatelogs: lc-rotatelogs.in
+	sed -e 's!@prefix@!${prefix}!g' lc-rotatelogs.in > lc-rotatelogs
 
 .PHONY: depend clean distclean
 # This sed command sucks but I don't know a better way -- jilles
