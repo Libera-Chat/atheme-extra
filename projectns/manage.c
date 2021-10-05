@@ -78,6 +78,7 @@ static void cmd_drop(sourceinfo_t *si, int parc, char *parv[])
 
 	logcommand(si, CMDLOG_ADMIN, "PROJECT:DROP: \2%s\2", name);
 	command_success_nodata(si, _("The registration for the project \2%s\2 has been dropped."), name);
+	free(name);
 }
 
 static void mod_init(module_t *const restrict m)
