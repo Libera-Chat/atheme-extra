@@ -1,40 +1,0 @@
-10
-
-dir
-68
-svn+ssh://stephen@dev.freenode.net/srv/svn/atheme+fn/trunk/help
-svn+ssh://stephen@dev.freenode.net/srv/svn/atheme+fn
-
-
-
-2012-06-16T14:45:57.668856Z
-66
-stephen
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-0d7f35cd-bd30-0410-8657-eaad79ef79fa
-
-oservice
-dir
-
-cservice
-dir
-
-nickserv
-dir
-
-libera
-dir
-
