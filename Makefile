@@ -36,6 +36,7 @@ SRCS = \
 	regnotice.c \
 	noemailnotice.c \
 	os_regts.c \
+	os_klinechan.c \
 	projectns/help.c \
 	projectns/info.c \
 	projectns/list.c \
