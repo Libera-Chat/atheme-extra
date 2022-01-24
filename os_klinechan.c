@@ -7,7 +7,8 @@
  * Default AKILL Time is based on the value of SET KLINETIME.
  */
 
-#include "atheme-compat.h"
+#include "fn-compat.h"
+#include "atheme.h"
 
 static void
 klinechan_check_join(hook_channel_joinpart_t *hdata)

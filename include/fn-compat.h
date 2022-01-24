@@ -29,6 +29,7 @@ COMPAT_TYPEDEF(struct, database_handle)
 COMPAT_TYPEDEF(struct, hook_channel_acl_req)
 COMPAT_TYPEDEF(struct, hook_channel_register_check)
 COMPAT_TYPEDEF(struct, hook_channel_req)
+COMPAT_TYPEDEF(struct, hook_channel_joinpart)
 COMPAT_TYPEDEF(struct, hook_channel_succession_req)
 COMPAT_TYPEDEF(struct, hook_user_req)
 COMPAT_TYPEDEF(struct, metadata)
@@ -42,6 +43,8 @@ COMPAT_TYPEDEF(struct, myuser)
 COMPAT_TYPEDEF(struct, service)
 COMPAT_TYPEDEF(struct, sourceinfo)
 COMPAT_TYPEDEF(struct, user)
+COMPAT_TYPEDEF(struct, chanuser)
+COMPAT_TYPEDEF(struct, kline)
 
 #undef COMPAT_TYPEDEF
 
