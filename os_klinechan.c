@@ -7,16 +7,16 @@
  * Default AKILL Time is based on the value of SET KLINETIME.
  */
 
-#include "atheme-compat.h"
+#include "atheme.h"
 
 static void
-klinechan_check_join(hook_channel_joinpart_t *hdata)
+klinechan_check_join(struct hook_channel_joinpart *hdata)
 {
-	mychan_t *mc;
-	chanuser_t *cu = hdata->cu;
-	service_t *svs;
+	struct mychan *mc;
+	struct chanuser *cu = hdata->cu;
+	struct service *svs;
 	const char *khost;
-	kline_t *k;
+	struct kline *k;
 
 	svs = service_find("operserv");
 	if (svs == NULL)
@@ -62,9 +62,9 @@ klinechan_check_join(hook_channel_joinpart_t *hdata)
 }
 
 static void
-klinechan_show_info(hook_channel_req_t *hdata)
+klinechan_show_info(struct hook_channel_req *hdata)
 {
-	metadata_t *md;
+	struct metadata *md;
 	const char *setter, *reason;
 	time_t ts;
 	struct tm tm;
@@ -88,12 +88,12 @@ klinechan_show_info(hook_channel_req_t *hdata)
 }
 
 static void
-os_cmd_klinechan(sourceinfo_t *si, int parc, char *parv[])
+os_cmd_klinechan(struct sourceinfo *si, int parc, char *parv[])
 {
 	char *target = parv[0];
 	char *action = parv[1];
 	char *reason = parv[2];
-	mychan_t *mc;
+	struct mychan *mc;
 
 	if (!target || !action)
 	{
@@ -161,12 +161,12 @@ os_cmd_klinechan(sourceinfo_t *si, int parc, char *parv[])
 }
 
 static void
-os_cmd_listklinechans(sourceinfo_t *si, int parc, char *parv[])
+os_cmd_listklinechans(struct sourceinfo *si, int parc, char *parv[])
 {
 	const char *pattern;
 	mowgli_patricia_iteration_state_t state;
-	mychan_t *mc;
-	metadata_t *md;
+	struct mychan *mc;
+	struct metadata *md;
 	unsigned int matches = 0;
 
 	pattern = parc >= 1 ? parv[0] : "*";
@@ -192,7 +192,7 @@ os_cmd_listklinechans(sourceinfo_t *si, int parc, char *parv[])
 						    N_("\2%u\2 matches for pattern \2%s\2"), matches), matches, pattern);
 }
 
-static command_t os_klinechan = {
+static struct command os_klinechan = {
 	.name           = "KLINECHAN",
 	.desc           = N_("Klines all users joining a channel for the duration set by SET KLINETIME."),
 	.access         = PRIV_MASS_AKILL,
@@ -201,7 +201,7 @@ static command_t os_klinechan = {
 	.help           = { .path = "contrib/klinechan" },
 };
 
-static command_t os_listklinechans = {
+static struct command os_listklinechans = {
 	.name           = "LISTKLINECHAN",
 	.desc           = N_("Lists active K:line channels."),
 	.access         = PRIV_MASS_AKILL,
@@ -211,20 +211,17 @@ static command_t os_listklinechans = {
 };
 
 static void
-mod_init(module_t *const restrict m)
+mod_init(struct module *const restrict m)
 {
 	service_named_bind_command("operserv", &os_klinechan);
 	service_named_bind_command("operserv", &os_listklinechans);
 
-	hook_add_event("channel_join");
 	hook_add_first_channel_join(klinechan_check_join);
-
-	hook_add_event("channel_info");
 	hook_add_channel_info(klinechan_show_info);
 }
 
 static void
-mod_deinit(const module_unload_intent_t intent)
+mod_deinit(const enum module_unload_intent intent)
 {
 	service_named_unbind_command("operserv", &os_klinechan);
 	service_named_unbind_command("operserv", &os_listklinechans);
