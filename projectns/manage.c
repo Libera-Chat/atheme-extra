@@ -71,10 +71,14 @@ static void cmd_drop(sourceinfo_t *si, int parc, char *parv[])
 		return;
 	}
 
+	// get the correct name casing before destroying the project
+	name = sstrdup(p->name);
+
 	projectsvs->project_destroy(p);
 
 	logcommand(si, CMDLOG_ADMIN, "PROJECT:DROP: \2%s\2", name);
 	command_success_nodata(si, _("The registration for the project \2%s\2 has been dropped."), name);
+	free(name);
 }
 
 static void mod_init(module_t *const restrict m)
