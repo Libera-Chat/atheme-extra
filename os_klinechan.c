@@ -49,7 +49,8 @@ klinechan_check_join(struct hook_channel_joinpart *hdata)
 		}
 		else
 		{
-		        const char *reason = metadata_find(mc, "private:klinechan:reason")->value;
+		        struct metadata* md = metadata_find(mc, "private:klinechan:reason");
+		        const char *reason = md != NULL ? md->value : "unknown";
 			slog(LG_INFO, "klinechan_check_join(): klining \2*@%s\2 (user \2%s!%s@%s\2 joined \2%s\2)",
 					khost, cu->user->nick,
 					cu->user->user, cu->user->host,
