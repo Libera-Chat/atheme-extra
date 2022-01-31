@@ -6,7 +6,7 @@
  * Core functionality - Database handling
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "main.h"
 
 #define DB_TYPE_PROJECT           "FNGROUP"

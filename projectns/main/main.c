@@ -6,7 +6,7 @@
  * Core functionality - Module declaration
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "main.h"
 
 unsigned int projectns_abirev = PROJECTNS_ABIREV;
@@ -49,6 +49,6 @@ static void mod_deinit(const module_unload_intent_t intent)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/main", MODULE_UNLOAD_CAPABILITY_RELOAD_ONLY, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/main", MODULE_UNLOAD_CAPABILITY_RELOAD_ONLY, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

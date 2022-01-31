@@ -6,15 +6,15 @@
  * Commands to register and drop projects
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns.h"
 
 static void cmd_register(sourceinfo_t *si, int parc, char *parv[]);
 static void cmd_drop(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t ps_register = { "REGISTER", N_("Adds a project registration."), PRIV_PROJECT_ADMIN, 2, cmd_register, { .path = "freenode/project_register" } };
-command_t ps_drop = { "DROP", N_("Deletes a project registration."), PRIV_PROJECT_ADMIN, 1, cmd_drop, { .path = "freenode/project_drop" } };
+command_t ps_register = { "REGISTER", N_("Adds a project registration."), PRIV_PROJECT_ADMIN, 2, cmd_register, { .path = "libera/project_register" } };
+command_t ps_drop = { "DROP", N_("Deletes a project registration."), PRIV_PROJECT_ADMIN, 1, cmd_drop, { .path = "libera/project_drop" } };
 
 static void cmd_register(sourceinfo_t *si, int parc, char *parv[])
 {
@@ -97,6 +97,6 @@ static void mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/manage", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/manage", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

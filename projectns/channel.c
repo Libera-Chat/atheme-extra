@@ -6,13 +6,13 @@
  * Commands to manage channel namespaces
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns.h"
 
 static void cmd_channel(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t ps_channel = { "CHANNEL", N_("Manages project channel namespaces."), PRIV_PROJECT_ADMIN, 4, cmd_channel, { .path = "freenode/project_channel" } };
+command_t ps_channel = { "CHANNEL", N_("Manages project channel namespaces."), PRIV_PROJECT_ADMIN, 4, cmd_channel, { .path = "libera/project_channel" } };
 
 static void cmd_channel(sourceinfo_t *si, int parc, char *parv[])
 {
@@ -141,6 +141,6 @@ static void mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/channel", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/channel", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

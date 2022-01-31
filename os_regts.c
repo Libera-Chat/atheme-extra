@@ -5,12 +5,12 @@
  * Allows network staff to manipulate registration timestamps.
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 
 static void os_cmd_regts(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t os_regts = { "REGTS", N_("Adjusts registration timestamps."), PRIV_ADMIN, 3, os_cmd_regts, { .path = "freenode/os_regts" } };
+command_t os_regts = { "REGTS", N_("Adjusts registration timestamps."), PRIV_ADMIN, 3, os_cmd_regts, { .path = "libera/os_regts" } };
 
 static void
 os_cmd_regts(sourceinfo_t *si, int parc, char *parv[])
@@ -208,7 +208,7 @@ mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/os_regts", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"libera/os_regts", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
 	PACKAGE_STRING,
-	"freenode <https://freenode.net>"
+	"libera chat <https://libera.chat>"
 );

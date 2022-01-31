@@ -6,7 +6,7 @@
  * Command to audit incompletely registered projects
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns.h"
 
@@ -18,7 +18,7 @@ command_t ps_audit = {
 	.access     = PRIV_PROJECT_AUSPEX,
 	.maxparc    = 1,
 	.cmd        = cmd_audit,
-	.help       = { .path = "freenode/project_audit" },
+	.help       = { .path = "libera/project_audit" },
 };
 
 static void cmd_audit(sourceinfo_t *si, int parc, char *parv[])
@@ -107,6 +107,6 @@ static void mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/audit", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/audit", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

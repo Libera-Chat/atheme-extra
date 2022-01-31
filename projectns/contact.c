@@ -6,13 +6,13 @@
  * Commands to manage registered contacts
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns.h"
 
 static void cmd_contact(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t ps_contact = { "CONTACT", N_("Manages project contacts."), PRIV_PROJECT_ADMIN, 5, cmd_contact, { .path = "freenode/project_contact" } };
+command_t ps_contact = { "CONTACT", N_("Manages project contacts."), PRIV_PROJECT_ADMIN, 5, cmd_contact, { .path = "libera/project_contact" } };
 
 static void cmd_contact(sourceinfo_t *si, int parc, char *parv[])
 {
@@ -214,6 +214,6 @@ static void mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/contact", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/contact", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

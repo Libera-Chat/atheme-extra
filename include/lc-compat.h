@@ -7,8 +7,8 @@
  * using 7.3 exclusively.
  */
 
-#ifndef ATHEME_FREENODE_COMPAT_H
-#define ATHEME_FREENODE_COMPAT_H
+#ifndef ATHEME_LIBERA_COMPAT_H
+#define ATHEME_LIBERA_COMPAT_H
 
 #include <atheme.h>
 

@@ -6,7 +6,7 @@
  * Commands to manipulate projects' settings
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns.h"
 
@@ -17,9 +17,9 @@ static void set_reginfo(sourceinfo_t *si, int parc, char *parv[]);
 static void set_name(sourceinfo_t *si, int parc, char *parv[]);
 
 command_t ps_set = { "SET", N_("Manipulates basic project settings."), PRIV_PROJECT_ADMIN, 3, cmd_set, { .func = help_set } };
-command_t ps_set_name = { "NAME", N_("Changes the name used to identify the project."), PRIV_PROJECT_ADMIN, 2, set_name, { .path = "freenode/project_set_name" } };
-command_t ps_set_openreg = { "OPENREG", N_("Allow non-contacts to register channels."), PRIV_PROJECT_ADMIN, 2, set_openreg, { .path = "freenode/project_set_openreg" } };
-command_t ps_set_reginfo = { "REGINFO", N_("Public information about the project namespace."), PRIV_PROJECT_ADMIN, 2, set_reginfo, { .path = "freenode/project_set_reginfo" } };
+command_t ps_set_name = { "NAME", N_("Changes the name used to identify the project."), PRIV_PROJECT_ADMIN, 2, set_name, { .path = "libera/project_set_name" } };
+command_t ps_set_openreg = { "OPENREG", N_("Allow non-contacts to register channels."), PRIV_PROJECT_ADMIN, 2, set_openreg, { .path = "libera/project_set_openreg" } };
+command_t ps_set_reginfo = { "REGINFO", N_("Public information about the project namespace."), PRIV_PROJECT_ADMIN, 2, set_reginfo, { .path = "libera/project_set_reginfo" } };
 
 mowgli_patricia_t *set_cmdtree;
 
@@ -223,6 +223,6 @@ static void mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/set", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/set", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

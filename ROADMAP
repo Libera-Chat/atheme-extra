@@ -1,7 +1,7 @@
 [x] Theia database loader
 [ ] Testing with large amounts of users, channels, etc
 [ ] Missing features
-  [x] message "freenode is a service of ..." on registration
+  [x] message "libera is a service of ..." on registration
   [x] umode +e on grouped nicks
   [x] nickserv/set_unfiltered (not needed)
   [x] nickserv/extendchans
@@ -26,7 +26,7 @@
   [ ] a command that allows helpers to drop nicks "expired" according to
       the policy
   [ ] look into accountability of channel ops towards channel ops
-  [ ] *!*@freenode/staff/* entries outside network channels seem more like
+  [ ] *!*@libera/staff/* entries outside network channels seem more like
       some sort of flag, not a regular access entry
 
 Things that will (most likely) go away:

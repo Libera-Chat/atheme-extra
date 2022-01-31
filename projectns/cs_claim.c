@@ -6,13 +6,13 @@
  * ChanServ command for contacts to claim channels
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns.h"
 
 static void cmd_claim(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t cs_claim = { "CLAIM", N_("Grants you access to a channel belonging to your project."), AC_AUTHENTICATED, 2, cmd_claim, { .path = "freenode/cs_claim" } };
+command_t cs_claim = { "CLAIM", N_("Grants you access to a channel belonging to your project."), AC_AUTHENTICATED, 2, cmd_claim, { .path = "libera/cs_claim" } };
 
 static void cmd_claim(sourceinfo_t *si, int parc, char *parv[])
 {
@@ -157,6 +157,6 @@ static void mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/cs_claim", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/cs_claim", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );
