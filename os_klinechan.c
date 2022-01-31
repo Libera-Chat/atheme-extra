@@ -199,7 +199,7 @@ static struct command os_klinechan = {
 	.access         = PRIV_MASS_AKILL,
 	.maxparc        = 3,
 	.cmd            = &os_cmd_klinechan,
-	.help           = { .path = "contrib/klinechan" },
+	.help           = { .path = "libera/klinechan" },
 };
 
 static struct command os_listklinechans = {
@@ -208,7 +208,7 @@ static struct command os_listklinechans = {
 	.access         = PRIV_MASS_AKILL,
 	.maxparc        = 1,
 	.cmd            = &os_cmd_listklinechans,
-	.help           = { .path = "contrib/listklinechans" },
+	.help           = { .path = "libera/listklinechans" },
 };
 
 static void
