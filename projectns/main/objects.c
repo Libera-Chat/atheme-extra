@@ -75,6 +75,9 @@ void project_destroy(struct projectns * const p)
 	MOWGLI_ITER_FOREACH_SAFE(n, tn, p->contacts.head)
 	{
 		struct project_contact *contact = n->data;
+
+		myuser_notice(projectsvs.me, contact->mu, "You have been removed as a contact for the \2%s\2 project "
+		                                          "(project no longer exists).", p->name);
 		contact_destroy(p, contact->mu);
 	}
 
