@@ -152,7 +152,7 @@ static void chaninfo_hook(hook_channel_req_t *hdata)
 
 			if (strlen(buf) > 80)
 			{
-				command_success_nodata(hdata->si, _("Public contacts: %s"), buf);
+				command_success_nodata(hdata->si, _("Group contacts (public): %s"), buf);
 				buf[0] = '\0';
 			}
 			if (buf[0])
@@ -164,7 +164,7 @@ static void chaninfo_hook(hook_channel_req_t *hdata)
 		}
 
 		if (buf[0])
-			command_success_nodata(hdata->si, _("Public contacts: %s"), buf);
+			command_success_nodata(hdata->si, _("Group contacts (public): %s"), buf);
 
 		if (priv)
 		{
@@ -177,7 +177,7 @@ static void chaninfo_hook(hook_channel_req_t *hdata)
 
 				if (strlen(buf) > 80)
 				{
-					command_success_nodata(hdata->si, _("Unlisted contacts: %s"), buf);
+					command_success_nodata(hdata->si, _("Group contacts (private): %s"), buf);
 					buf[0] = '\0';
 				}
 				if (buf[0])
@@ -189,7 +189,7 @@ static void chaninfo_hook(hook_channel_req_t *hdata)
 			}
 
 			if (buf[0])
-				command_success_nodata(hdata->si, _("Unlisted contacts: %s"), buf);
+				command_success_nodata(hdata->si, _("Group contacts (private): %s"), buf);
 		}
 	}
 
