@@ -10,7 +10,7 @@
 
 static void os_cmd_regts(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t os_regts = { "REGTS", N_("Adjusts registration timestamps."), PRIV_ADMIN, 3, os_cmd_regts, { .path = "freenode/os_regts" } };
+command_t os_regts = { "REGTS", N_("Adjusts registration timestamps."), "operserv:regts", 3, os_cmd_regts, { .path = "freenode/os_regts" } };
 
 static void
 os_cmd_regts(sourceinfo_t *si, int parc, char *parv[])
