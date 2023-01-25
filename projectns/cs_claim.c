@@ -131,7 +131,7 @@ static void cmd_claim(sourceinfo_t *si, int parc, char *parv[])
 		req.ca = ca;
 		req.oldlevel = ca->level;
 
-		ca->level |= founder_flags;
+		chanacs_modify_simple(ca, founder_flags, 0, si->smu);
 
 		req.newlevel = ca->level;
 
