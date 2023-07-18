@@ -1,0 +1,12 @@
+Help for LISTGROUPCHANS:
+
+The LISTGROUPCHANS command shows registered channels which belong
+to a namespace that you are a group contact for. If a filter is given,
+only shows the channels which match the filter. Otherwise, all channels
+in your namespaces are reported.
+
+Syntax: LISTGROUPCHANS [filter]
+
+Examples:
+    /msg &nick& LISTGROUPCHANS
+    /msg &nick& LISTGROUPCHANS #coolproject-*
