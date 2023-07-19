@@ -20,12 +20,8 @@ static void cmd_listgroupchans(sourceinfo_t *si, int parc, char *parv[])
 
 	mowgli_node_t *n;
 	mowgli_list_t *plist = projectsvs->myuser_get_projects(si->smu);
-	unsigned int num_projects = 0;
 
-	MOWGLI_ITER_FOREACH(n, plist->head)
-		num_projects++;
-
-	if (!num_projects)
+	if (!MOWGLI_LIST_LENGTH(plist))
 	{
 		command_fail(si, fault_noprivs, _("You are not an authorized group contact for any project."));
 		return;
@@ -67,10 +63,10 @@ static void cmd_listgroupchans(sourceinfo_t *si, int parc, char *parv[])
 	else
 	{
 		if (filter)
-			command_success_nodata(si, ngettext(N_("\2%d\2 match for pattern \2%s\2"), N_("\2%d\2 matches for pattern \2%s\2"), matches),
+			command_success_nodata(si, ngettext(N_("\2%u\2 match for pattern \2%s\2"), N_("\2%u\2 matches for pattern \2%s\2"), matches),
 			                       matches, filter);
 		else
-			command_success_nodata(si, ngettext(N_("\2%d\2 match"), N_("\2%d\2 matches"), matches), matches);
+			command_success_nodata(si, ngettext(N_("\2%u\2 match"), N_("\2%u\2 matches"), matches), matches);
 	}
 
 	if (filter)
@@ -95,5 +91,5 @@ static void mod_deinit(const module_unload_intent_t unused)
 DECLARE_MODULE_V1
 (
 		"freenode/projectns/cs_listgroupchans", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-		"", "freenode <http://www.freenode.net>"
+		"", "Libera Chat <https://libera.chat>"
 );
