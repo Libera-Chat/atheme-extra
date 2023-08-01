@@ -135,6 +135,18 @@ static void chaninfo_hook(hook_channel_req_t *hdata)
 
 	if (p)
 	{
+		mowgli_node_t *n;
+		bool is_gc = false;
+		MOWGLI_ITER_FOREACH(n, p->contacts.head)
+		{
+			struct project_contact *contact = n->data;
+			if (hdata->si->smu == contact->mu)
+			{
+				is_gc = true;
+				break;
+			}
+		}
+
 		bool marked = p->marks.head != NULL;
 		if (marked && priv)
 			command_success_nodata(hdata->si, _("The \2%s\2 namespace is registered to the \2%s\2 project (\2MARKED\2)"), namespace, p->name);
@@ -143,7 +155,6 @@ static void chaninfo_hook(hook_channel_req_t *hdata)
 
 		char buf[BUFSIZE] = "";
 
-		mowgli_node_t *n;
 		MOWGLI_ITER_FOREACH(n, p->contacts.head)
 		{
 			struct project_contact *c = n->data;
@@ -166,7 +177,7 @@ static void chaninfo_hook(hook_channel_req_t *hdata)
 		if (buf[0])
 			command_success_nodata(hdata->si, _("Public contacts: %s"), buf);
 
-		if (priv)
+		if (priv || is_gc)
 		{
 			buf[0] = '\0';
 			MOWGLI_ITER_FOREACH(n, p->contacts.head)
@@ -238,6 +249,20 @@ static void did_register_hook(hook_channel_req_t *hdata)
 {
 	char *namespace = NULL;
 	struct projectns *project = projectsvs->channame_get_project(hdata->mc->name, &namespace);
+
+	if (project && hdata->si->su)
+	{
+		mowgli_node_t *n;
+		MOWGLI_ITER_FOREACH(n, project->contacts.head)
+		{
+			const struct project_contact *const contact = n->data;
+
+			myuser_notice(projectsvs->me->nick, contact->mu, "The user \2%s\2 (account name \2%s\2) has "
+			              "registered the channel \2%s\2 which is within the namespace (\2%s\2) of a "
+			              "project that you are a group contact for (\2%s\2)", hdata->si->su->nick,
+			              entity(hdata->si->smu)->name, hdata->mc->name, namespace, project->name);
+		}
+	}
 
 	if (project)
 	{

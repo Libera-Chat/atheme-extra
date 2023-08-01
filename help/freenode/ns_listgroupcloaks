@@ -1,0 +1,12 @@
+Help for LISTGROUPCLOAKS:
+
+The LISTGROUPCLOAKS command shows accounts who are assigned a cloak belonging
+to one of the cloak namespaces you are a group contact for.
+If a filter is given, only shows accounts which match the filter.
+Otherwise, all accounts with cloaks in your namespaces are reported.
+
+Syntax: LISTGROUPCLOAKS [filter]
+
+Examples:
+    /msg &nick& LISTGROUPCLOAKS
+    /msg &nick& LISTGROUPCLOAKS coolproject/*
