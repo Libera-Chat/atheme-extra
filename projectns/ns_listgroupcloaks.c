@@ -16,7 +16,8 @@ command_t ns_listgroupcloaks = { "LISTGROUPCLOAKS", N_("List accounts with cloak
 
 struct cloak_ns {
 	struct projectns *project;
-	char pattern[BUFSIZE];
+	char main_pattern[HOSTLEN + 1];
+	char dual_pattern[HOSTLEN + 1];
 };
 
 static void cmd_listgroupcloaks(sourceinfo_t *si, int parc, char *parv[])
@@ -37,8 +38,12 @@ static void cmd_listgroupcloaks(sourceinfo_t *si, int parc, char *parv[])
 		{
 			struct cloak_ns *cns = smalloc(sizeof *cns);
 			cns->project = contact->project;
-			mowgli_strlcpy(cns->pattern, (const char *)n2->data, sizeof cns->pattern);
-			mowgli_strlcat(cns->pattern, "/*", sizeof cns->pattern);
+			// main pattern matches project/* for regular cloaks
+			mowgli_strlcpy(cns->main_pattern, (const char *)n2->data, sizeof cns->main_pattern);
+			mowgli_strlcat(cns->main_pattern, "/*", sizeof cns->main_pattern);
+			// dual pattern matches project.* after the rightmost / for dual cloaks (project1/project2.foo)
+			mowgli_strlcpy(cns->dual_pattern, (const char *)n2->data, sizeof cns->dual_pattern);
+			mowgli_strlcat(cns->dual_pattern, ".*", sizeof cns->dual_pattern);
 			mowgli_node_add(cns, mowgli_node_create(), &cloak_ns_list);
 		}
 
@@ -61,6 +66,7 @@ static void cmd_listgroupcloaks(sourceinfo_t *si, int parc, char *parv[])
 	struct myuser *mu;
 	struct metadata *md;
 	struct myentity_iteration_state state;
+	const char *slash;
 
 	MYENTITY_FOREACH_T(mt, &state, ENT_USER)
 	{
@@ -69,13 +75,17 @@ static void cmd_listgroupcloaks(sourceinfo_t *si, int parc, char *parv[])
 		if (md == NULL)
 			continue;
 
+		slash = strrchr(md->value, '/');
+		if (slash == NULL)
+			continue;
+
 		if (filter != NULL && match(filter, md->value))
 			continue;
 
 		MOWGLI_ITER_FOREACH(n, cloak_ns_list.head)
 		{
 			struct cloak_ns *cns = (struct cloak_ns*)n->data;
-			if (!match(cns->pattern, md->value))
+			if (!match(cns->main_pattern, md->value) || !match(cns->dual_pattern, slash + 1))
 			{
 				command_success_nodata(si, "- %s (%s) [%s]", md->value, mt->name, cns->project->name);
 				matches++;
