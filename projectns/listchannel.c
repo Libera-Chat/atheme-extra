@@ -7,13 +7,13 @@
  * Command to display information about registered projects
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns.h"
 
 static void cmd_listchannel(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t ps_listchannel = { "LISTCHANNEL", N_("Lists channel namespaces."), PRIV_PROJECT_AUSPEX, 1, cmd_listchannel, { .path = "freenode/project_listchannel" } };
+command_t ps_listchannel = { "LISTCHANNEL", N_("Lists channel namespaces."), PRIV_PROJECT_AUSPEX, 1, cmd_listchannel, { .path = "libera/project_listchannel" } };
 
 struct each_channel_state
 {
@@ -91,6 +91,6 @@ static void mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/listchannel", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/listchannel", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

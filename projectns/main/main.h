@@ -9,7 +9,7 @@
 #ifndef PROJECTNS_MAIN_H
 #define PROJECTNS_MAIN_H
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "../projectns_common.h"
 
 #define MYUSER_PRIVDATA_NAME "freenode:projects"

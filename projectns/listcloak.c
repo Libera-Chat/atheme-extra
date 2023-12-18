@@ -7,13 +7,13 @@
  * Command to display information about registered projects
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns.h"
 
 static void cmd_listcloak(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t ps_listcloak = { "LISTCLOAK", N_("Lists cloak namespaces."), PRIV_PROJECT_AUSPEX, 1, cmd_listcloak, { .path = "freenode/project_listcloak" } };
+command_t ps_listcloak = { "LISTCLOAK", N_("Lists cloak namespaces."), PRIV_PROJECT_AUSPEX, 1, cmd_listcloak, { .path = "libera/project_listcloak" } };
 
 struct each_cloak_state
 {
@@ -91,6 +91,6 @@ static void mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/listcloak", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/listcloak", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

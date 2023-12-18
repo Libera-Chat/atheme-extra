@@ -2,11 +2,11 @@
  * Copyright (c) 2016 Mike Quin
  * Rights to this code are as documented in doc/LICENSE.
  *
- * freenode on-identify notice to users with no valid email address set
+ * libera on-identify notice to users with no valid email address set
  *
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 
 static void user_identify_notice(user_t *u);
@@ -33,13 +33,13 @@ static void user_identify_notice(user_t *u)
 		notice(nicksvs.nick, u->nick, "WARNING: Your NickServ account does not have a valid email address set.");
 		notice(nicksvs.nick, u->nick, "Should you forget your password it may not be possible to recover your acccount.");
 		notice(nicksvs.nick, u->nick, "For help setting an email address, see \2/msg NickServ HELP SET EMAIL\2.");
-		notice(nicksvs.nick, u->nick, "Should you need more assistance you can /join #freenode to find network staff.");
+		notice(nicksvs.nick, u->nick, "Should you need more assistance you can /join #libera to find network staff.");
 	}
 }
 
 DECLARE_MODULE_V1
 (
-	"freenode/noemailnotice", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"libera/noemailnotice", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
 	PACKAGE_STRING,
-	"freenode <http://freenode.net>"
+	"libera chat <https://libera.chat>"
 );

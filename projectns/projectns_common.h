@@ -9,7 +9,7 @@
 #ifndef PROJECTNS_COMMON_H
 #define PROJECTNS_COMMON_H
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 
 #define PRIV_PROJECT_ADMIN  "project:admin"

@@ -9,13 +9,13 @@
 #ifndef PROJECTNS_H
 #define PROJECTNS_H
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns_common.h"
 
 struct projectsvs *projectsvs;
 
-#define MAIN_MODULE "freenode/projectns/main"
+#define MAIN_MODULE "libera/projectns/main"
 
 static inline void projectns_main_symbol_impl(module_t *m)
 {

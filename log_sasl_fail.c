@@ -1,4 +1,4 @@
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #ifdef NEED_OLD_COMPAT_INCLUDES
 #include "pmodule.h"
@@ -32,6 +32,6 @@ static void mod_deinit(module_unload_intent_t intentvoid)
 }
 
 DECLARE_MODULE_V1 (
-	"freenode/log_sasl_fail", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/log_sasl_fail", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

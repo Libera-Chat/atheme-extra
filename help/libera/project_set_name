@@ -6,4 +6,4 @@ information attached to it, such as contacts, namespaces and marks.
 Syntax: SET <project> NAME <new>
 
 Examples:
-    /msg &nick& SET OpenProjectsNet NAME freenode
+    /msg &nick& SET freenode NAME libera

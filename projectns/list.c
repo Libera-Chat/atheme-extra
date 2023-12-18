@@ -6,13 +6,13 @@
  * Command to display information about registered projects
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "atheme.h"
 #include "projectns.h"
 
 static void cmd_list(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t ps_list = { "LIST", N_("Lists project registrations."), PRIV_PROJECT_AUSPEX, 1, cmd_list, { .path = "freenode/project_list" } };
+command_t ps_list = { "LIST", N_("Lists project registrations."), PRIV_PROJECT_AUSPEX, 1, cmd_list, { .path = "libera/project_list" } };
 
 static void cmd_list(sourceinfo_t *si, int parc, char *parv[])
 {
@@ -80,6 +80,6 @@ static void mod_deinit(const module_unload_intent_t unused)
 
 DECLARE_MODULE_V1
 (
-	"freenode/projectns/list", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"", "freenode <http://www.freenode.net>"
+	"libera/projectns/list", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "libera chat <https://libera.chat>"
 );

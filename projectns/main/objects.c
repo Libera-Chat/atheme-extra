@@ -6,7 +6,7 @@
  * Core functionality - Data structure management
  */
 
-#include "fn-compat.h"
+#include "lc-compat.h"
 #include "main.h"
 
 struct project_contact *contact_new(struct projectns * const p, myuser_t * const mu)
