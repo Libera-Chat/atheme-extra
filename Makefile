@@ -35,6 +35,7 @@ SRCS = \
 	cs_successor_freenodestaff.c \
 	regnotice.c \
 	noemailnotice.c \
+	ns_defaultcloak.c \
 	os_regts.c \
 	os_klinechan.c \
 	projectns/help.c \
