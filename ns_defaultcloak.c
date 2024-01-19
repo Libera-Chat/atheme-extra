@@ -14,54 +14,66 @@
 /* cloak prefix, should be non-empty for hash init. */
 #define CLOAK_PREFIX "user/"
 
-#define MAX_NICK_LEN 16
-
 static uint32_t hash_iv;
 
-static int
+static bool
 build_cloak(char *newhost, size_t hostlen, struct myuser *mu)
 {
-	int maxlen1, i;
+	size_t i;
 	const char *p;
 	unsigned char hash_char;
 	/* FNV-1a hash */
 	uint32_t hash = hash_iv;
+	bool convert_underscore = false;
 	bool invalidchar = false;
-
-	i = strlen(CLOAK_PREFIX);
-	maxlen1 = hostlen - 1 - i;
-	if (maxlen1 < MAX_NICK_LEN)
-		return -1;
+	
+	const size_t CLOAK_PREFIX_LEN = strlen(CLOAK_PREFIX);
+	i = CLOAK_PREFIX_LEN;
 	strncpy(newhost, CLOAK_PREFIX, hostlen);
 	p = entity(mu)->name;
-	while (i < maxlen1 && *p != '\0')
+	while (*p != '\0')
 	{
 		if (isdigit((unsigned char)*p) || strchr(VALID_SPECIALS, *p))
 		{
 			hash ^= (uint32_t)*p;
-			newhost[i++] = *p;
+			if (i < hostlen)
+				newhost[i++] = *p;
+			convert_underscore = true;
 		}
 		else if (isalpha((unsigned char)*p))
 		{
 			hash ^= 0x20 | (uint32_t)*p;
-			newhost[i++] = *p;
+			if (i < hostlen)
+				newhost[i++] = *p;
+			convert_underscore = true;
 		}
 		else
 		{
 			hash ^= 0x20 | (uint32_t)*p;
 			if (*p == '_')
-				newhost[i++] = '-';
+			{
+				if (convert_underscore && i < hostlen)
+					newhost[i++] = '-';
+				convert_underscore = false;
+			}
+			else
+				convert_underscore = true;
 			invalidchar = true;
 		}
 		hash *= 16777619;
 		p++;
 	}
+	if (i >= hostlen)
+		invalidchar = true;
+	else if (i == CLOAK_PREFIX_LEN)
+		/* Yes, you're very clever. Have an easter egg. */
+		i += snprintf(newhost + i, hostlen - i, "...");
 	if (invalidchar || *p != '\0')
 	{
-		if (i > maxlen1 - 6)
-			i = maxlen1 - 6;
+		if (i > hostlen - 7)
+			i = hostlen - 7;
 		hash = (hash >> 17) + (hash & 0xffff);
-		snprintf(newhost + i, hostlen - i, "/%05d", hash);
+		snprintf(newhost + i, hostlen - i, ":%05d", hash);
 	}
 	else
 		newhost[i] = '\0';
@@ -117,9 +129,7 @@ handle_verify_register(struct hook_user_req *req)
 {
 	char newhost[HOSTLEN + 1];
 	struct myuser *mu = req->mu;
-	int cloaktype = build_cloak(newhost, sizeof newhost, mu);
-	if (cloaktype < 0)
-		return; /* Internal error that should never happen, probably should log. */
+	bool cloaktype = build_cloak(newhost, sizeof newhost, mu);
 	change_vhost(mu, newhost, cloaktype, NULL);
 }
 
@@ -165,8 +175,6 @@ ns_cmd_defaultcloak(struct sourceinfo *si, int parc, char *parv[])
 
 	/* Make default cloak, check if target already has it. */
 	cloaktype = build_cloak(newhost, sizeof newhost, mu);
-	if (cloaktype < 0)
-		return; /* Internal error that should never happen, probably should log. */
 	md = metadata_find(mu, "private:usercloak");
 	if (md && !strcmp(md->value, newhost))
 	{
