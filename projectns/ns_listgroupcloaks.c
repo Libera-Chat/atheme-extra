@@ -16,8 +16,6 @@ command_t ns_listgroupcloaks = { "LISTGROUPCLOAKS", N_("List accounts with cloak
 
 struct cloak_ns {
 	struct projectns *project;
-	size_t main_len;
-	size_t dual_len;
 	char main_pattern[HOSTLEN + 1];
 	char dual_pattern[HOSTLEN + 1];
 };
@@ -42,12 +40,10 @@ static void cmd_listgroupcloaks(sourceinfo_t *si, int parc, char *parv[])
 			cns->project = contact->project;
 			// main pattern matches project/* for regular cloaks
 			mowgli_strlcpy(cns->main_pattern, (const char *)n2->data, sizeof cns->main_pattern);
-			mowgli_strlcat(cns->main_pattern, "/", sizeof cns->main_pattern);
+			mowgli_strlcat(cns->main_pattern, "/*", sizeof cns->main_pattern);
 			// dual pattern matches project.* after the rightmost / for dual cloaks (project1/project2.foo)
 			mowgli_strlcpy(cns->dual_pattern, (const char *)n2->data, sizeof cns->dual_pattern);
-			mowgli_strlcat(cns->dual_pattern, ".", sizeof cns->dual_pattern);
-			cns->main_len = strlen(cns->main_pattern);
-			cns->dual_len = strlen(cns->dual_pattern);
+			mowgli_strlcat(cns->dual_pattern, ".*", sizeof cns->dual_pattern);
 			mowgli_node_add(cns, mowgli_node_create(), &cloak_ns_list);
 		}
 
@@ -89,7 +85,7 @@ static void cmd_listgroupcloaks(sourceinfo_t *si, int parc, char *parv[])
 		MOWGLI_ITER_FOREACH(n, cloak_ns_list.head)
 		{
 			struct cloak_ns *cns = (struct cloak_ns*)n->data;
-			if (!strncmp(cns->main_pattern, md->value, cns->main_len) || !strncmp(cns->dual_pattern, slash + 1, cns->dual_len))
+			if (!match(cns->main_pattern, md->value) || !match(cns->dual_pattern, slash + 1))
 			{
 				command_success_nodata(si, "- %s (%s) [%s]", md->value, mt->name, cns->project->name);
 				matches++;
