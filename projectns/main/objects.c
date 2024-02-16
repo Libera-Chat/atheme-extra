@@ -75,6 +75,7 @@ void project_destroy(struct projectns * const p)
 	MOWGLI_ITER_FOREACH_SAFE(n, tn, p->contacts.head)
 	{
 		struct project_contact *contact = n->data;
+		slog(LG_REGISTER, _("PROJECT:CONTACT:LOST: \2%s\2 from \2%s\2"), entity(contact->mu)->name, p->name);
 		contact_destroy(p, contact->mu);
 	}
 
