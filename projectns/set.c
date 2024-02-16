@@ -27,7 +27,6 @@ static void help_set(sourceinfo_t *si, const char *subcmd)
 {
 	if (!subcmd)
 	{
-		command_success_nodata(si, _("***** \2%s Help\2 *****"), projectsvs->me->nick);
 		command_success_nodata(si, _("Help for \2SET\2:"));
 		command_success_nodata(si, " ");
 		command_success_nodata(si, _("SET allows you to manipulate various properties\n"
@@ -36,7 +35,6 @@ static void help_set(sourceinfo_t *si, const char *subcmd)
 		command_help(si, set_cmdtree);
 		command_success_nodata(si, " ");
 		command_success_nodata(si, _("For more specific help use \2/msg %s HELP SET \37command\37\2."), projectsvs->me->disp);
-		command_success_nodata(si, _("***** \2End of Help\2 *****"));
 	}
 	else
 		help_display_as_subcmd(si, si->service, "SET", subcmd, set_cmdtree);
