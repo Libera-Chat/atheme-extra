@@ -1,0 +1,18 @@
+Help for DEFAULTCLOAK:
+
+DEFAULTCLOAK allows operators to set a cloak to
+the default for that account, as if the account
+was just created and verified. This equivalent to
+using VHOST ON with a specific virtual host
+based on the account name and its hash.
+
+Syntax: DEFAULTCLOAK <nickname>
+
+If the nickname is marked, you can override this
+using the FORCE keyword.
+
+Syntax: DEFAULTCLOAK <nickname> FORCE
+
+Examples:
+    /msg &nick& DEFAULTCLOAK former-gc
+    /msg &nick& DEFAULTCLOAK She FORCE

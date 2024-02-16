@@ -6,6 +6,7 @@
  */
 
 #include "atheme.h"
+#include <assert.h>
 #include <stdint.h>
 
 /* allow us-ascii letters, digits and the following characters */
@@ -63,7 +64,8 @@ build_cloak(char *newhost, size_t hostlen, struct myuser *mu)
 		hash *= 16777619;
 		p++;
 	}
-	if (i >= hostlen)
+	assert(i <= hostlen);
+	if (i == hostlen)
 		invalidchar = true;
 	else if (i == CLOAK_PREFIX_LEN)
 		/* Yes, you're very clever. Have an easter egg. */
