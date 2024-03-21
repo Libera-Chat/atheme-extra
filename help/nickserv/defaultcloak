@@ -13,6 +13,11 @@ using the FORCE keyword.
 
 Syntax: DEFAULTCLOAK <nickname> FORCE
 
+Alternatively, to view what the default cloak
+for an account would be, use the SHOW keyword.
+
+Syntax: DEFAULTCLOAK <nickname> SHOW
+
 Examples:
     /msg &nick& DEFAULTCLOAK former-gc
     /msg &nick& DEFAULTCLOAK She FORCE
