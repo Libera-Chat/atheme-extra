@@ -156,7 +156,7 @@ ns_cmd_defaultcloak(struct sourceinfo *si, int parc, char *parv[])
 	if (!target)
 	{
 		command_fail(si, fault_needmoreparams, STR_INSUFFICIENT_PARAMS, "DEFAULTCLOAK");
-		command_fail(si, fault_needmoreparams, _("Syntax: DEFAULTCLOAK <account> [FORCE]"));
+		command_fail(si, fault_needmoreparams, _("Syntax: DEFAULTCLOAK <account> [FORCE|SHOW]"));
 		return;
 	}
 	if (!(mu = myuser_find_ext(target)))
@@ -166,10 +166,16 @@ ns_cmd_defaultcloak(struct sourceinfo *si, int parc, char *parv[])
 	}
 	if (parv[1])
 	{
-		if(strcasecmp(parv[1], "FORCE"))
+		if(!strcasecmp(parv[1], "SHOW"))
 		{
-			command_fail(si, fault_badparams, _("The second argument may only be %s."), "FORCE");
-			command_fail(si, fault_badparams, _("Syntax: DEFAULTCLOAK <account> [FORCE]"));
+			build_cloak(newhost, sizeof newhost, mu);
+			command_success_nodata(si, _("Default cloak for \2%s\2: %s"), entity(mu)->name, newhost);
+			return;
+		}
+		else if(strcasecmp(parv[1], "FORCE"))
+		{
+			command_fail(si, fault_badparams, _("Invalid keyword \2%s\2."), parv[1]);
+			command_fail(si, fault_badparams, _("Syntax: DEFAULTCLOAK <account> [FORCE|SHOW]"));
 			return;
 		}
 		force = true;
