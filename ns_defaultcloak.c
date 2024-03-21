@@ -263,7 +263,7 @@ mod_init(struct module *const restrict m)
 	while (*p != 0)
 	{
 		hash_iv ^= *p++;
-		hash_iv *= 16777619; 
+		hash_iv *= 16777619;
 	}
 	hook_add_user_verify_register(handle_verify_register);
 	service_named_bind_command("nickserv", &ns_defaultcloak);
