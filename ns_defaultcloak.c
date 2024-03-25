@@ -9,71 +9,78 @@
 #include <assert.h>
 #include <stdint.h>
 
-/* allow us-ascii letters, digits and the following characters */
-#define VALID_SPECIALS "-"
-
-/* cloak prefix, should be non-empty for hash init. */
+/* cloak prefix, must be non-empty. */
 #define CLOAK_PREFIX "user/"
+
+/* Colon, five digits, null. */
+#define CLOAK_SUFFIX_LEN 7
 
 static uint32_t hash_iv;
 
+/* Fills "newhost" with the default cloak for the account name given by "src". */
+/* `hostlen` is the length of the buffer pointed to by newhost. It must be at least 12 bytes large. */
 static bool
-build_cloak(char *newhost, size_t hostlen, struct myuser *mu)
+build_cloak(char *newhost, size_t hostlen, const char *src)
 {
 	size_t i;
-	const char *p;
 	unsigned char hash_char;
 	/* FNV-1a hash */
 	uint32_t hash = hash_iv;
-	bool convert_underscore = false;
 	bool invalidchar = false;
-	
 	const size_t CLOAK_PREFIX_LEN = strlen(CLOAK_PREFIX);
-	i = CLOAK_PREFIX_LEN;
-	strncpy(newhost, CLOAK_PREFIX, hostlen);
-	p = entity(mu)->name;
-	while (*p != '\0')
+	assert(hostlen >= CLOAK_SUFFIX_LEN + CLOAK_PREFIX_LEN);
+	/* Safety: ^ assert ensures there's enough space. */
+	strcpy(newhost, CLOAK_PREFIX);
+	/* Index of the last byte written. */
+	i = CLOAK_PREFIX_LEN - 1;
+	/* Temporarily reduce hostlen to be the index of the last byte. */
+	--hostlen;
+	/* Search for invalid characters. This changes copying behavior. */
+	for (const char *p = src; *p != '\0'; ++p)
 	{
-		if (isdigit((unsigned char)*p) || strchr(VALID_SPECIALS, *p))
-		{
-			hash ^= (uint32_t)*p;
-			if (i < hostlen)
-				newhost[i++] = *p;
-			convert_underscore = true;
-		}
-		else if (isalpha((unsigned char)*p))
-		{
-			hash ^= 0x20 | (uint32_t)*p;
-			if (i < hostlen)
-				newhost[i++] = *p;
-			convert_underscore = true;
-		}
-		else
-		{
-			hash ^= 0x20 | (uint32_t)*p;
-			if (*p == '_')
-			{
-				if (convert_underscore && i < hostlen)
-					newhost[i++] = '-';
-				convert_underscore = false;
-			}
-			else
-				convert_underscore = true;
+		if (!isalnum((unsigned char)*p) && *p != '-') {
 			invalidchar = true;
+			break;
 		}
-		hash *= 16777619;
-		p++;
 	}
+	/* Copy the cloak and calculate the hash from casefolded characters. */
+	for (; *src != '\0'; ++src)
+	{
+		const int c = ToUpper((unsigned char)*src);
+		if (i < hostlen)
+		{
+			if (isalnum(c))
+				newhost[++i] = *src;
+			else if (c == '-')
+			{
+				if (!invalidchar || newhost[i] != '-')
+					newhost[++i] = '-';
+			}
+			else if (c == '_')
+			{
+				if (newhost[i] != '-')
+					newhost[++i] = '-';
+			}
+		}
+		hash ^= c;
+		hash *= 16777619;
+	}
+	/* Defensive programming assert. This should never trigger for any input. */
 	assert(i <= hostlen);
+	/* Change i to be the number of bytes written. */
+	++i;
+	/* Restore hostlen to be one past the end. */
+	++hostlen;
 	if (i == hostlen)
 		invalidchar = true;
 	else if (i == CLOAK_PREFIX_LEN)
 		/* Yes, you're very clever. Have an easter egg. */
 		i += snprintf(newhost + i, hostlen - i, "...");
-	if (invalidchar || *p != '\0')
+	if (invalidchar)
 	{
-		if (i > hostlen - 7)
-			i = hostlen - 7;
+		if (i > hostlen - CLOAK_SUFFIX_LEN)
+			i = hostlen - CLOAK_SUFFIX_LEN;
+		/* Fold hash value to fit in 5 digits. */
 		hash = (hash >> 17) + (hash & 0xffff);
 		snprintf(newhost + i, hostlen - i, ":%05d", hash);
 	}
@@ -131,7 +138,7 @@ handle_verify_register(struct hook_user_req *req)
 {
 	char newhost[HOSTLEN + 1];
 	struct myuser *mu = req->mu;
-	bool cloaktype = build_cloak(newhost, sizeof newhost, mu);
+	bool cloaktype = build_cloak(newhost, sizeof newhost, entity(mu)->name);
 	change_vhost(mu, newhost, cloaktype, NULL);
 }
 
@@ -168,7 +175,7 @@ ns_cmd_defaultcloak(struct sourceinfo *si, int parc, char *parv[])
 	{
 		if(!strcasecmp(parv[1], "SHOW"))
 		{
-			build_cloak(newhost, sizeof newhost, mu);
+			build_cloak(newhost, sizeof newhost, entity(mu)->name);
 			command_success_nodata(si, _("Default cloak for \2%s\2: %s"), entity(mu)->name, newhost);
 			return;
 		}
@@ -182,7 +189,7 @@ ns_cmd_defaultcloak(struct sourceinfo *si, int parc, char *parv[])
 	}
 
 	/* Make default cloak, check if target already has it. */
-	cloaktype = build_cloak(newhost, sizeof newhost, mu);
+	cloaktype = build_cloak(newhost, sizeof newhost, entity(mu)->name);
 	md = metadata_find(mu, "private:usercloak");
 	if (md && !strcmp(md->value, newhost))
 	{
@@ -254,9 +261,8 @@ static struct command ns_defaultcloak = {
 };
 
 static void
-mod_init(struct module *const restrict m)
+init_hash(void)
 {
-	MODULE_TRY_REQUEST_DEPENDENCY(m, "nickserv/vhost");
 	const char *p = CLOAK_PREFIX;
 	/* FNV-0 to calculate an offset that isn't the default one. */
 	hash_iv = 0;
@@ -265,6 +271,13 @@ mod_init(struct module *const restrict m)
 		hash_iv ^= *p++;
 		hash_iv *= 16777619;
 	}
+}
+
+static void
+mod_init(struct module *const restrict m)
+{
+	MODULE_TRY_REQUEST_DEPENDENCY(m, "nickserv/vhost");
+	init_hash();
 	hook_add_user_verify_register(handle_verify_register);
 	service_named_bind_command("nickserv", &ns_defaultcloak);
 }
