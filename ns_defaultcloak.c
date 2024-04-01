@@ -17,6 +17,7 @@ struct setter
 	bool                needs_force;
 };
 
+static bool nsdc_autocloak = true;
 static uint32_t hash_iv = 0;
 
 static void
@@ -150,6 +151,9 @@ nsdc_change_vhost(struct myuser *const restrict mu, const char *const restrict n
 static void
 nsdc_user_verify_register(struct hook_user_req *const restrict req)
 {
+	if (! nsdc_autocloak)
+		return;
+
 	char newhost[HOSTLEN + 1];
 	const bool cloaktype = nsdc_build_cloak(entity(req->mu)->name, newhost, sizeof newhost);
 
@@ -300,6 +304,7 @@ mod_init(struct module *const restrict m)
 
 	(void) nsdc_init_hash();
 
+	(void) add_bool_conf_item("AUTODEFAULTCLOAK", &nicksvs.me->conf_table, 0, &nsdc_autocloak, true);
 	(void) hook_add_user_verify_register(&nsdc_user_verify_register);
 	(void) service_named_bind_command("nickserv", &ns_cmd_defaultcloak);
 }
@@ -307,6 +312,7 @@ mod_init(struct module *const restrict m)
 static void
 mod_deinit(const enum module_unload_intent ATHEME_VATTR_UNUSED intent)
 {
+	(void) del_conf_item("AUTODEFAULTCLOAK", &nicksvs.me->conf_table);
 	(void) hook_del_user_verify_register(&nsdc_user_verify_register);
 	(void) service_named_unbind_command("nickserv", &ns_cmd_defaultcloak);
 }
