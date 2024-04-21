@@ -64,7 +64,14 @@ nsdc_build_cloak(const char *const restrict accname, char *const restrict newhos
 		if (i >= (hostlen - 1))
 			continue;
 
-		if (isalnum(c))
+		if (isdigit(c))
+		{
+			if (i == (CLOAK_PREFIX_LEN - 1))
+				newhost[++i] = '-';
+
+			newhost[++i] = *p;
+		}
+		else if (isalpha(c))
 		{
 			newhost[++i] = *p;
 		}
