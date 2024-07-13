@@ -90,6 +90,9 @@ install:
 			cd ..; \
 		fi; \
 	done)
+	(cd email; for i in *; do \
+		$(INSTALL) -m 644 $$i $(DESTDIR)$(SHAREDIR)/email; \
+	done)
 
 .SUFFIXES: .so
 
