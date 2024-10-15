@@ -1,13 +1,15 @@
 /*
+ * Originally called cs_successor_freenodestaff,
+ * renamed to be more generic and moved to projectns/ due to now only working on registered project channels
  * Copyright (c) 2012 Marien Zwart <marien.zwart@gmail.com>.
  * Rights to this code are as documented in doc/LICENSE.
  *
- * Forces the successor for single-# channels to be freenode-staff,
- * if an account by that name exists.
+ * Forces the successor for channels in registered projects to be libera-placeholder-account
  */
 
 #include "fn-compat.h"
 #include "atheme.h"
+#include "projectns.h"
 
 static void channel_pick_successor_hook(hook_channel_succession_req_t *req)
 {
@@ -18,7 +20,11 @@ static void channel_pick_successor_hook(hook_channel_succession_req_t *req)
 	if (req->mc->name[0] == '#' && req->mc->name[1] == '#')
 		return;
 
-	/* Use freenode-staff if it exists.
+	/* Don't override successor of channels not registered to projects. */
+	if (!projectsvs->channame_get_project(req->mc->name, NULL))
+		return;
+
+	/* Use libera-placeholder-account if it exists.
 	 * If myuser_find_ext returns NULL the normal successor logic is used.
 	 * If some other user of this hook picked a successor
 	 * we intentionally overrule it.
@@ -38,7 +44,6 @@ static void mod_deinit(module_unload_intent_t intent)
 
 DECLARE_MODULE_V1
 (
-	"freenode/cs_successor_freenodestaff", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"$Id: cs_successor_freenodestaff.c 65 2012-06-09 12:25:31Z stephen $",
-	"freenode <http://freenode.net>"
+	"freenode/projectns/cs_projectsuccessor", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
+	"", "Libera Chat <https://libera.chat>"
 );
