@@ -1,69 +1,56 @@
 /*
- * Copyright (c) 2007 Jilles Tjoelker
+ * Copyright (C) 2007 Jilles Tjoelker
+ * Copyright (C) 2025 Libera Chat <https://libera.chat/>
+ *
  * Rights to this code are as documented in doc/LICENSE.
  *
- * freenode on-registration notices and default settings
- *
- * $Id: regnotice.c 69 2013-03-25 13:07:19Z stephen $
+ * Notices upon the registration of accounts and channels.
  */
 
-#include "fn-compat.h"
 #include "atheme.h"
 
-static void nick_reg_notice(myuser_t *mu)
+static void
+user_reg_notice(struct myuser *const mu)
 {
-	myuser_notice(nicksvs.nick, mu, " ");
-	myuser_notice(nicksvs.nick, mu, "For frequently-asked questions about the network, please see the");
-	myuser_notice(nicksvs.nick, mu, "Knowledge Base page (https://freenode.net/kb/all). Should you need more");
-	myuser_notice(nicksvs.nick, mu, "help you can /join #freenode to find network staff.");
+	return_if_fail(mu != NULL);
+
+	(void) myuser_notice(nicksvs.nick, mu, " ");
+	(void) myuser_notice(nicksvs.nick, mu, "For help using the network, please see the Guides");
+	(void) myuser_notice(nicksvs.nick, mu, "section on our website: https://libera.chat/guides/");
+	(void) myuser_notice(nicksvs.nick, mu, " ");
+	(void) myuser_notice(nicksvs.nick, mu, "If you still need help you can /JOIN #libera to find");
+	(void) myuser_notice(nicksvs.nick, mu, "network staff.");
 }
 
-static void chan_reg_notice(hook_channel_req_t *hdata)
+static void
+chan_reg_notice(struct hook_channel_req *const hdata)
 {
-	sourceinfo_t *si = hdata->si;
-	mychan_t *mc = hdata->mc;
+	return_if_fail(hdata != NULL);
+	return_if_fail(hdata->si != NULL);
+	return_if_fail(hdata->mc != NULL);
+	return_if_fail(hdata->mc->name != NULL);
 
-	if (si == NULL || mc == NULL)
-		return;
-
-	command_success_nodata(si, " ");
-	command_success_nodata(si, "Channel guidelines can be found on the freenode website:");
-	command_success_nodata(si, "https://freenode.net/changuide");
-	if (mc->name[1] != '#')
-	{
-		command_success_nodata(si, "This is a primary namespace channel as per\n"
-				"https://freenode.net/policies#channel-ownership");
-		command_success_nodata(si, "If you do not own this name, please consider\n"
-				"dropping %s and using #%s instead.",
-				mc->name, mc->name);
-	}
-	else
-	{
-		command_success_nodata(si, "This is an \"about\" channel as per");
-		command_success_nodata(si, "https://freenode.net/policies#channel-ownership");
-	}
-
-	mc->mlock_on = CMODE_NOEXT | CMODE_TOPIC | mode_to_flag('c');
-	mc->mlock_off |= CMODE_SEC;
-	/* not needed now that we have founder_flags in config */
-	/*chanacs_change_simple(mc, &si->smu->ent, NULL, 0, CA_AUTOOP);*/
+	(void) command_success_nodata(hdata->si, " ");
+	(void) command_success_nodata(hdata->si, "Note that channels on Libera.Chat are created secret");
+	(void) command_success_nodata(hdata->si, "(+s) by default. If you wish for your channel to be");
+	(void) command_success_nodata(hdata->si, "discoverable by network users (for example with ALIS");
+	(void) command_success_nodata(hdata->si, "or /LIST), you will need to unset this channel mode:");
+	(void) command_success_nodata(hdata->si, " ");
+	(void) command_success_nodata(hdata->si, "/MODE %s -s", hdata->mc->name);
 }
 
-static void mod_init(module_t *m)
+static void
+mod_init(struct module *const ATHEME_VATTR_UNUSED m)
 {
-	hook_add_user_register(nick_reg_notice);
-	hook_add_first_channel_register(chan_reg_notice);
+	(void) hook_add_user_register(&user_reg_notice);
+	(void) hook_add_channel_register(&chan_reg_notice);
 }
 
-static void mod_deinit(module_unload_intent_t intentvoid)
+static void
+mod_deinit(const enum module_unload_intent ATHEME_VATTR_UNUSED intent)
 {
-	hook_del_user_register(nick_reg_notice);
-	hook_del_channel_register(chan_reg_notice);
+	(void) hook_del_user_register(&user_reg_notice);
+	(void) hook_del_channel_register(&chan_reg_notice);
 }
 
-DECLARE_MODULE_V1
-(
-	"freenode/regnotice", MODULE_UNLOAD_CAPABILITY_OK, mod_init, mod_deinit,
-	"$Id: regnotice.c 69 2013-03-25 13:07:19Z stephen $",
-	"freenode <http://www.freenode.net>"
-);
+VENDOR_DECLARE_MODULE_V1("freenode/regnotice", MODULE_UNLOAD_CAPABILITY_OK, "Libera Chat <https://libera.chat/>")
