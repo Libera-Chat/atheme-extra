@@ -47,7 +47,13 @@ static void cmd_listgroupchans(sourceinfo_t *si, int parc, char *parv[])
 			struct project_contact *contact = n->data;
 			if (project == contact->project)
 			{
-				command_success_nodata(si, "- %s (%s) [%s]", mc->name, mychan_founder_names(mc), project->name);
+				if (mc->chan && mc->chan->modes & CMODE_SEC)
+					command_success_nodata(si, "- %s (SECRET) (%s) [%s]", mc->name, mychan_founder_names(mc), project->name);
+				else if (mc->mlock_on & CMODE_SEC)
+					command_success_nodata(si, "- %s (SECRET) (%s) [%s]", mc->name, mychan_founder_names(mc), project->name);
+				else
+					command_success_nodata(si, "- %s (%s) [%s]", mc->name, mychan_founder_names(mc), project->name);
+
 				matches++;
 			}
 		}
