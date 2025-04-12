@@ -30,6 +30,9 @@ chan_reg_notice(struct hook_channel_req *const hdata)
 	return_if_fail(hdata->mc != NULL);
 	return_if_fail(hdata->mc->name != NULL);
 
+	if (hdata->mc->chan && ! (hdata->mc->chan->modes & CMODE_SEC))
+		return;
+
 	(void) command_success_nodata(hdata->si, " ");
 	(void) command_success_nodata(hdata->si, "Note that channels on Libera.Chat are created secret");
 	(void) command_success_nodata(hdata->si, "(+s) by default. If you wish for your channel to be");
