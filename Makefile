@@ -32,6 +32,7 @@ default: all
 
 SRCS = \
 	log_sasl_fail.c \
+	cs_listmodes.c \
 	regnotice.c \
 	noemailnotice.c \
 	ns_defaultcloak.c \

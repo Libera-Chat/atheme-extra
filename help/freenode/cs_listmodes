@@ -1,0 +1,9 @@
+Help for LISTMODES:
+
+The LISTMODES command shows you the channel modes and
+mode locks for all channels you have access to.
+
+Syntax: LISTMODES
+
+Examples:
+    /msg &nick& LISTMODES
