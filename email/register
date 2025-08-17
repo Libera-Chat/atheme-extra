@@ -13,7 +13,7 @@ command on IRC:
 
 Or visit the following URL:
 
-https://account.libera.chat/verify/&accountname&/&param&
+https://account.libera.chat/verify/&urlaccountname&/&param&
 
 Thank you for registering your account on the &netname& IRC network!
 
