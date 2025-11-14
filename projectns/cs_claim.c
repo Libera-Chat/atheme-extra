@@ -136,6 +136,7 @@ static void cmd_claim(sourceinfo_t *si, int parc, char *parv[])
 		req.newlevel = ca->level;
 
 		command_success_nodata(si, _("Full access to \2%s\2 has been granted to \2%s\2 on behalf of the \2%s\2 project."), mc->name, entity(si->smu)->name, p->name);
+		verbose(mc, "Full access to \2%s\2 has been granted to \2%s\2 on behalf of the \2%s\2 project.", mc->name, entity(si->smu)->name, p->name);
 
 		hook_call_channel_acl_change(&req);
 		chanacs_close(ca);
