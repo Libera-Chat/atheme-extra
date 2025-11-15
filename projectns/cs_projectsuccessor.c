@@ -39,6 +39,8 @@ static void channel_pick_successor_hook(hook_channel_succession_req_t *req)
 
 static void mod_init(module_t *m)
 {
+	if (!use_projectns_main_symbols(m))
+		return;
 	add_dupstr_conf_item("SUCCESSOR", &projectsvs->me->conf_table, 0, &project_successor, NULL);
 	hook_add_first_channel_pick_successor(channel_pick_successor_hook);
 }
