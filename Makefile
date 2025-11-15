@@ -32,7 +32,6 @@ default: all
 
 SRCS = \
 	log_sasl_fail.c \
-	cs_successor_freenodestaff.c \
 	cs_listmodes.c \
 	regnotice.c \
 	noemailnotice.c \
@@ -55,6 +54,7 @@ SRCS = \
 	projectns/audit.c \
 	projectns/cs_claim.c \
 	projectns/cs_listgroupchans.c \
+	projectns/cs_projectsuccessor.c \
 	projectns/ns_listgroupcloaks.c
 
 # To compile your own modules, add them to SRCS or make blegh.so
