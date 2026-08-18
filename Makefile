@@ -39,6 +39,7 @@ SRCS = \
 	ns_rejectcertfp.c \
 	os_regts.c \
 	os_klinechan.c \
+	point_to_sasl.c \
 	projectns/help.c \
 	projectns/info.c \
 	projectns/list.c \
