@@ -9,7 +9,7 @@
 #include "fn-compat.h"
 #include "atheme.h"
 
-static void user_identify_notice(user_t *u);
+static void user_identify_notice(struct hook_user_identify *hdata);
 
 static void mod_init(module_t *m)
 {
@@ -21,9 +21,9 @@ static void mod_deinit(module_unload_intent_t intentvoid)
 	hook_del_user_identify(user_identify_notice);
 }
 
-static void user_identify_notice(user_t *u)
+static void user_identify_notice(struct hook_user_identify *hdata)
 {
-	myuser_t *mu = u->myuser;
+	myuser_t *mu = hdata->u->myuser;
 	if (mu->flags & MU_WAITAUTH)
 	{
 		return;
