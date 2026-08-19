@@ -127,6 +127,10 @@ static void cmd_contact(sourceinfo_t *si, int parc, char *parv[])
 				else
 					command_success_nodata(si, _("\2%s\2 was set as a primary contact for project \2%s\2 (only visible to staff)."), entity(mu)->name, p->name);
 			}
+
+			myuser_notice(projectsvs->me->nick, mu, "You have been added as a %s contact for the \2%s\2 project "
+			                                        "(%s).", c->secondary ? "secondary" : "primary", p->name,
+			                                        c->visible ? "user-visible" : "only visible to staff");
 		}
 		else
 		{
@@ -160,24 +164,36 @@ static void cmd_contact(sourceinfo_t *si, int parc, char *parv[])
 				c->visible = true;
 				logcommand(si, CMDLOG_ADMIN, "PROJECT:CONTACT:SET: \2%s\2 on \2%s\2 to %s", entity(mu)->name, p->name, "public");
 				command_success_nodata(si, _("\2%s\2 is now listed as a public contact for project \2%s\2."), entity(mu)->name, p->name);
+
+				myuser_notice(projectsvs->me->nick, mu, "Your status as a contact for the \2%s\2 project "
+				                                        "has changed (now user-visible).", p->name);
 			}
 			else if (change_visible == VIS_PRIVATE)
 			{
 				c->visible = false;
 				logcommand(si, CMDLOG_ADMIN, "PROJECT:CONTACT:SET: \2%s\2 on \2%s\2 to %s", entity(mu)->name, p->name, "private");
 				command_success_nodata(si, _("\2%s\2 is now only displayed to staff as contact for project \2%s\2."), entity(mu)->name, p->name);
+
+				myuser_notice(projectsvs->me->nick, mu, "Your status as a contact for the \2%s\2 project "
+				                                        "has changed (now only visible to staff).", p->name);
 			}
 			if (change_secondary == GC_SECONDARY)
 			{
 				c->secondary = true;
 				logcommand(si, CMDLOG_ADMIN, "PROJECT:CONTACT:SET: \2%s\2 on \2%s\2 to %s", entity(mu)->name, p->name, "secondary");
 				command_success_nodata(si, _("\2%s\2 is now considered a secondary contact for project \2%s\2."), entity(mu)->name, p->name);
+
+				myuser_notice(projectsvs->me->nick, mu, "Your status as a contact for the \2%s\2 project "
+				                                        "has changed (now secondary).", p->name);
 			}
 			else if (change_secondary == GC_PRIMARY)
 			{
 				c->secondary = false;
 				logcommand(si, CMDLOG_ADMIN, "PROJECT:CONTACT:SET: \2%s\2 on \2%s\2 to %s", entity(mu)->name, p->name, "primary");
 				command_success_nodata(si, _("\2%s\2 is now considered a primary contact for project \2%s\2."), entity(mu)->name, p->name);
+
+				myuser_notice(projectsvs->me->nick, mu, "Your status as a contact for the \2%s\2 project "
+				                                        "has changed (now primary).", p->name);
 			}
 
 			if (!change_visible && !change_secondary)
@@ -190,6 +206,10 @@ static void cmd_contact(sourceinfo_t *si, int parc, char *parv[])
 		{
 			logcommand(si, CMDLOG_ADMIN, "PROJECT:CONTACT:DEL: \2%s\2 from \2%s\2", entity(mu)->name, p->name);
 			command_success_nodata(si, _("\2%s\2 was removed as a contact for project \2%s\2."), entity(mu)->name, p->name);
+
+			myuser_notice(projectsvs->me->nick, mu, "You have been removed as a contact for the \2%s\2 project.",
+			                                        p->name);
+
 			if (!p->contacts.count)
 				command_success_nodata(si, _("The project \2%s\2 now has no contacts."), p->name);
 		}
